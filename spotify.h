@@ -20,23 +20,8 @@ namespace spotify {
     void addPlaylist(Playlist *&playlist);
     void deletePlaylist(Playlist *&playlist);
     void selectPlaylist(spotify::Playlist *playlist, spotify::Playlist *&selectedPlaylist);
+    //jangan lupa prototypenya, semangat gusy
     
 }
 
 #endif
-
-
-// // Function prototypes for songs
-// void addSong(Song *&song);
-// void printSongs(Song *song);
-// void deleteSong(Song *&song);
-
-// // Function prototypes for playlists
-
-// void deletePlaylist(Playlist *&playlist);
-// void selectPlaylist(Playlist *playlist, Playlist *&selectedPlaylist);
-
-// // Function prototypes for playlist details
-// void listPlaylistSongs(Playlist *selectedPlaylist);
-// void addSongToPlaylist(Playlist *selectedPlaylist, Song *allSongs);
-// void deleteSongFromPlaylist(Playlist *selectedPlaylist);
