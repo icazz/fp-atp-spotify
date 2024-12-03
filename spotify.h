@@ -20,6 +20,7 @@ namespace spotify {
     void addPlaylist(Playlist *&playlist);
     void deletePlaylist(Playlist *&playlist);
     void selectPlaylist(spotify::Playlist *playlist, spotify::Playlist *&selectedPlaylist);
+    void listPlaylistSongs(Playlist* playlist, int sortOption);
     
 }
 

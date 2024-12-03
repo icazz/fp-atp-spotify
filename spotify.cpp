@@ -101,4 +101,11 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist *&select
     selectedPlaylist = nullptr;
 }
 
+// FUNGSI UNTUK MENU DETAIL PLAYLIST
+
+void listPlaylistSongs(Playlist* playlist, int sortOption){
+    // isi sini
+    // jangan lupa cek .h udah kutambahin prototype, nah kek gitu kalo mau buat fungsi baru
+    // kalo program ga jalan wajar aja, soalnya menu ini nyambung sama menu playlist, belum ku benerin errornya hehe
+}
 

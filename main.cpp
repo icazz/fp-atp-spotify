@@ -137,7 +137,15 @@ void playlistDetailMenu(State &state, spotify::Playlist *&selectedPlaylist) {
 
     switch (choice) {
     case PLAYLIST_DETAIL_LIST:
-        // spotify::listPlaylistSongs(selectedPlaylist);
+        int sortChoice;
+        std::cout << "Sort songs:\n";
+        std::cout << "0. Default\n";
+        std::cout << "1. By artist\n";
+        std::cout << "2. By title\n";
+        std::cout << "Choice: ";
+        std::cin >> sortChoice;
+
+        //spotify::listPlaylistSongs(selectedPlaylist, sortChoice);
         break;
     case PLAYLIST_DETAIL_ADD:
         // spotify::addSongToPlaylist(selectedPlaylist);
