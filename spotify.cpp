@@ -101,6 +101,72 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist *&select
     selectedPlaylist = nullptr;
 }
 
+//Fungsi untuk menambahkan lagu
+void addSong(Playlist* playlist) {
+    if (!playlist) {
+        std::cout << "No playlist selected. Please select a playlist first.\n";
+        return;
+    }
+
+    Song* newSong = new Song;
+    std::cout << "Enter song title: ";
+    std::cin.ignore();
+    std::getline(std::cin, newSong->title);
+    std::cout << "Enter song artist: ";
+    std::getline(std::cin, newSong->artist);
+    newSong->next = nullptr; // Inisialisasi pointer ke lagu berikutnya
+
+    // Jika playlist kosong
+    if (!playlist->head) {
+        playlist->head = newSong; // Head menunjuk ke lagu pertama
+    } else {
+        // Cari lagu terakhir di linked list
+        Song* temp = playlist->head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newSong; // Tambahkan lagu baru di akhir list
+    }
+
+    std::cout << "Song added successfully to playlist '" << playlist->name << "'.\n";
+}
+
+//fungsi untuk menghapus lagu
+void deleteSong(Playlist* playlist) {
+    if (!playlist || !playlist->head) {
+        std::cout << "No songs available in the playlist.\n";
+        return;
+    }
+
+    std::string songTitle;
+    std::cout << "Enter the title of the song to delete: ";
+    std::cin.ignore();
+    std::getline(std::cin, songTitle);
+
+    Song* current = playlist->head;
+    Song* previous = nullptr;
+
+    // Cari lagu berdasarkan judul
+    while (current) {
+        if (current->title == songTitle) {
+            if (!previous) {
+                // Jika lagu yang dihapus adalah head
+                playlist->head = current->next;
+            } else {
+                // Jika lagu ada di tengah atau di akhir
+                previous->next = current->next;
+            }
+            delete current;
+            std::cout << "Song '" << songTitle << "' deleted successfully.\n";
+            return;
+        }
+        previous = current;
+        current = current->next;
+    }
+
+    std::cout << "Song not found in the playlist.\n";
+}
+
 // FUNGSI UNTUK MENU DETAIL PLAYLIST
 
 void listPlaylistSongs(Playlist* playlist, int sortOption){
