@@ -168,6 +168,90 @@ void deleteSong(Playlist* playlist) {
 }
 
 // FUNGSI UNTUK MENU DETAIL PLAYLIST
+void menuDetailPlaylist(Playlist* playlist) {
+    if (!playlist) {
+        std::cout << "Playlist is not valid.\n";
+        return;
+    }
+
+    int choice;
+
+    do {
+        std::cout << "\n--- Playlist: " << playlist->name << " ---\n";
+        std::cout << "1. List Songs\n";
+        std::cout << "2. Add Song\n";
+        std::cout << "3. Delete Song\n";
+        std::cout << "4. Back to Playlist Menu\n";
+        std::cout << "Enter your choice: ";
+        std::cin >> choice;
+
+        switch (choice) {
+            case 1: { // List Songs with Sorting Options
+                int sortOption;
+                do {
+                    std::cout << "\n--- List Songs Menu ---\n";
+                    std::cout << "1. Default\n";
+                    std::cout << "2. Title\n";
+                    std::cout << "3. Artist\n";
+                    std::cout << "4. Back to Playlist Menu\n";
+                    std::cout << "Enter your sorting choice: ";
+                    std::cin >> sortOption;
+
+                    switch (sortOption) {
+                        case 1:
+                            playlist->listSongs(SortOption::DEFAULT); // Menampilkan lagu secara default
+                            break;
+                        case 2:
+                            playlist->listSongs(SortOption::TITLE); // Menampilkan lagu diurutkan berdasarkan judul
+                            break;
+                        case 3:
+                            playlist->listSongs(SortOption::ARTIST); // Menampilkan lagu diurutkan berdasarkan artis
+                            break;
+                        case 4:
+                            std::cout << "Returning to Playlist Detail Menu...\n";
+                            break;
+                        default:
+                            std::cout << "Invalid choice. Try again.\n";
+                    }
+                } while (sortOption != 4);
+                break;
+            }
+
+            case 2: { // Add Song to Playlist
+                std::string songTitle, songArtist;
+                std::cout << "Enter song title: ";
+                std::cin.ignore(); 
+                std::cout << "Enter artist name: ";
+                std::getline(std::cin, songArtist);
+
+                playlist->addSong(Song(songTitle, songArtist)); // Menambahkan lagu ke playlist
+                std::cout << "Song added to playlist!\n";
+                break;
+            }
+
+            case 3: { // Delete Song from Playlist
+                std::string songTitle;
+                std::cout << "Enter the title of the song to delete: ";
+                std::cin.ignore(); 
+                std::getline(std::cin, songTitle);
+
+                if (playlist->deleteSong(songTitle)) {
+                    std::cout << "Song deleted from playlist.\n";
+                } else {
+                    std::cout << "Song not found in playlist.\n";
+                }
+                break;
+            }
+
+            case 4:
+                std::cout << "Returning to Playlist Menu...\n";
+                break;
+
+            default:
+                std::cout << "Invalid choice. Try again.\n";
+        }
+    } while (choice != 4);
+}
 
 void listPlaylistSongs(Playlist* playlist, int sortOption){
     if (!playlist || !playlist->head) {
