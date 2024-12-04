@@ -3,6 +3,43 @@
 #include<string>
 #include "spotify.h"
 
+//Ni'mah - FUNGSI UNTUK SONGMENU
+void spotify::printSongs(spotify::Song *song){
+    if(song == nullptr){
+        std::cout<<"No songs available.\n";
+        return;
+    }
+
+    std::cout<<"Songs:\n";
+    int count = 1;
+    while(song){
+        std::cout<< count++ << ". Title: " << song->title << ", Artist: " << song->artist << "\n";
+        song = song->next;
+    }
+}
+
+void spotify::addSong(spotify::Song *&head){
+    spotify::Song *newSong = new spotify::Song;
+    std::cout<< "Enter song title: ";
+    std::cin.ignore();
+    std::getline(std::cin, newSong->title);
+
+    std::cout<<"Enter song artist: ";
+    std::getline(std::cin, newSong->artist);
+
+    newSong->next = nullptr;
+
+    if(!head){
+        head = newSong;
+    } else {
+        spotify::Song *temp = head;
+        while(temp->next){
+            temp = temp->next;
+        }
+        temp->next = newSong;
+    }
+    std::cout<<"Song '" << newSong->title << "' by '" << newSong ->artist << "' added successfully.\n";
+}
 // FUNGSI UNTUK MENU PLAYLIST
 void spotify::printPlaylist(spotify::Playlist *playlist) {
     if (playlist ==nullptr) {
@@ -73,7 +110,6 @@ void spotify::deletePlaylist(spotify::Playlist *&head) {
 
     std::cout << "Playlist not found.\n";
 }
-
 
 void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist **selectedPlaylist, bool &success) {
     if (!head) {

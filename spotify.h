@@ -15,7 +15,8 @@ namespace spotify {
         Song* head = nullptr;
         Playlist* next = nullptr;
     };
-
+    void printSongs(Song *song);
+    void addSong(Song *&head);
     void printPlaylist(Playlist *playlist);
     void addPlaylist(Playlist *&playlist);
     void deletePlaylist(Playlist *&playlist);
