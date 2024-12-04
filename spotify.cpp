@@ -177,7 +177,7 @@ void menuDetailPlaylist(Playlist* playlist) {
     int choice;
 
     do {
-        std::cout << "\n--- Playlist: " << playlist->name << " ---\n";
+        std::cout << "\nPlaylist: " << playlist->name << "\n";
         std::cout << "1. List Songs\n";
         std::cout << "2. Add Song\n";
         std::cout << "3. Delete Song\n";
@@ -189,7 +189,7 @@ void menuDetailPlaylist(Playlist* playlist) {
             case 1: { // List Songs with Sorting Options
                 int sortOption;
                 do {
-                    std::cout << "\n--- List Songs Menu ---\n";
+                    std::cout << "\nList Songs Menu\n";
                     std::cout << "1. Default\n";
                     std::cout << "2. Title\n";
                     std::cout << "3. Artist\n";
