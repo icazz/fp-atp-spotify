@@ -3,7 +3,7 @@
 #include <locale>
 #include <string>
 #include "spotify.h"
-
+//ini hansen
 enum State { MAIN = 1, SONG, PLAYLIST, DETAIL_PLAYLIST};
 enum MainMenu { MENU_SONG = 1, MENU_PLAYLIST, MENU_EXIT };
 enum SongMenu { SONG_BACK = 0, SONG_LIST, SONG_ADD, SONG_DELETE };
