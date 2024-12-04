@@ -19,8 +19,12 @@ namespace spotify {
     void printPlaylist(Playlist *playlist);
     void addPlaylist(Playlist *&playlist);
     void deletePlaylist(Playlist *&playlist);
-    void selectPlaylist(spotify::Playlist *playlist, spotify::Playlist *&selectedPlaylist);
-    void listPlaylistSongs(Playlist* playlist, int sortOption);
+    void selectPlaylist(Playlist *playlist, Playlist **selectedPlaylist, bool &success);
+    // void listPlaylistSongs(Playlist* playlist, int sortOption);
+    // void addSong(Playlist *playlist);
+    // void deleteSong(Playlist* playlist);
+
+
     //jangan lupa prototypenya, semangat gusy
     
 }

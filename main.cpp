@@ -93,6 +93,7 @@ void songMenu(State &state, spotify::Song *&song) {
 
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist) {
     int choice;
+    bool success = false;
 
     std::cout << "0. Back\n";
     std::cout << "1. List playlists\n";
@@ -113,10 +114,10 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
         spotify::deletePlaylist(playlist);
         break;
     case PLAYLIST_SELECT:
-        //select playlist masih error, nanti kubenerin
-        spotify::selectPlaylist(playlist, selectedPlaylist);
-        if (!selectedPlaylist) break;
-        state = DETAIL_PLAYLIST;
+        spotify::selectPlaylist(playlist, &selectedPlaylist, success);
+        if (success && selectedPlaylist){
+            state = DETAIL_PLAYLIST;
+        }
         break;
     case PLAYLIST_BACK:
         state = MAIN;
@@ -127,7 +128,7 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
 void playlistDetailMenu(State &state, spotify::Playlist *&selectedPlaylist) {
 
     int choice;
-    std::cout << "Playlist: " << selectedPlaylist -> name << std::endl;
+    //std::cout << "Playlist: " << selectedPlaylist -> name << std::endl;
     std::cout << "0. Back\n";
     std::cout << "1. List songs\n";
     std::cout << "2. Add song\n";
