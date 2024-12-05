@@ -22,6 +22,8 @@ int main() {
     spotify::Song *song = nullptr;
     bool end = false;
     State state = MAIN;
+    
+    std::ofstream outFile("PlaylistAku.txt", std::ios::app);
 
     while (true) {
         switch (state) {
@@ -115,10 +117,10 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
         spotify::deletePlaylist(playlist);
         break;
     case PLAYLIST_SELECT:
-        // spotify::selectPlaylist(playlist, &selectedPlaylist, success);
-        // if (success && selectedPlaylist){
-        //     state = DETAIL_PLAYLIST;
-        // }
+        spotify::selectPlaylist(playlist, &selectedPlaylist, success);
+        if (success && selectedPlaylist){
+            state = DETAIL_PLAYLIST;
+        }
         break;
     case PLAYLIST_BACK:
         state = MAIN;
@@ -129,7 +131,7 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
 void playlistDetailMenu(State &state, spotify::Playlist *&selectedPlaylist) {
 
     int choice;
-    //std::cout << "Playlist: " << selectedPlaylist -> name << std::endl;
+    // std::cout << "Playlist: " << selectedPlaylist -> name << std::endl;
     std::cout << "0. Back\n";
     std::cout << "1. List songs\n";
     std::cout << "2. Add song\n";

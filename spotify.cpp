@@ -81,12 +81,18 @@ void spotify::printPlaylist(spotify::Playlist *playlist) {
         std::cout << "No playlists available.\n";
         return;
     }
+    
+    spotify::Playlist *temp = playlist;
     std::cout << "Playlists:\n";
     int count = 1;
-    while (playlist) {
-        std::cout << count++ << ". " << playlist->name << std::endl;
-        playlist = playlist->next;
+
+    while (temp) {
+        std::cout << count++ << ". " << temp->name << std::endl;
+        temp = temp->next;
     }
+    
+    showText(playlist, "PlaylistAku.txt");
+
 }
 
 void spotify::addPlaylist(spotify::Playlist *&playlist) {
@@ -107,6 +113,8 @@ void spotify::addPlaylist(spotify::Playlist *&playlist) {
         temp->next = newPlaylist;
     }
 
+    showText(playlist, "PlaylistAku.txt");
+
     std::cout << "Playlist '" << newPlaylist->name << "' added successfully!\n";
 }
 
@@ -123,7 +131,7 @@ void spotify::deletePlaylist(spotify::Playlist *&head) {
 
     spotify::Playlist *current = head;
     spotify::Playlist *previous = nullptr;
-
+    
     // Cari playlist dengan nama yang sesuai
     while (current) {
         if (current->name == playlistName) {
@@ -136,11 +144,15 @@ void spotify::deletePlaylist(spotify::Playlist *&head) {
             }
 
             delete current;
+
+            showText(head, "PlaylistAku.txt");
+        
             std::cout << "Playlist '" << playlistName << "' deleted successfully.\n";
             return;
         }
         previous = current;
         current = current->next;
+
     }
 
     std::cout << "Playlist not found.\n";
@@ -174,6 +186,20 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist **select
     *selectedPlaylist = nullptr; // Set pointer ke nullptr jika tidak ditemukan
     success = false;
 }
+
+void spotify::showText(spotify::Playlist *&text, std::string fileName){
+    spotify::Playlist *show_text = text;
+    std::ofstream outFile(fileName, std::ios::out);
+            int counter = 1;
+            while (show_text) {
+                outFile.close(); // Close the file before reopening in overwrite mode
+                outFile.open(fileName, std::ios::app); // Reopen the file in overwrite mode
+                outFile << counter << ". " << show_text->name << std::endl;
+                counter++;
+                show_text = show_text->next;
+            }
+}
+
 
 // // FUNGSI UNTUK MENU DETAIL PLAYLIST
 
@@ -229,35 +255,35 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist **select
 //     }
 // }
 
-// //Fungsi untuk menambahkan lagu
-// void spotify::addSong(Playlist *playlist) {
-//     if (!playlist) {
-//         std::cout << "No playlist selected. Please select a playlist first.\n";
-//         return;
-//     }
+//Fungsi untuk menambahkan lagu
+void spotify::addSong(Playlist *playlist) {
+    if (!playlist) {
+        std::cout << "No playlist selected. Please select a playlist first.\n";
+        return;
+    }
 
-//     Song *newSong = new Song;
-//     std::cout << "Enter song title: ";
-//     std::cin.ignore();
-//     std::getline(std::cin, newSong->title);
-//     std::cout << "Enter song artist: ";
-//     std::getline(std::cin, newSong->artist);
-//     newSong->next = nullptr; // Inisialisasi pointer ke lagu berikutnya
+    Song *newSong = new Song;
+    std::cout << "Enter song title: ";
+    std::cin.ignore();
+    std::getline(std::cin, newSong->title);
+    std::cout << "Enter song artist: ";
+    std::getline(std::cin, newSong->artist);
+    newSong->next = nullptr; // Inisialisasi pointer ke lagu berikutnya
 
-//     // Jika playlist kosong
-//     if (!playlist->head) {
-//         playlist->head = newSong; // Head menunjuk ke lagu pertama
-//     } else {
-//         // Cari lagu terakhir di linked list
-//         Song* temp = playlist->head;
-//         while (temp->next != nullptr) {
-//             temp = temp->next;
-//         }
-//         temp->next = newSong; // Tambahkan lagu baru di akhir list
-//     }
+    // Jika playlist kosong
+    if (!playlist->head) {
+        playlist->head = newSong; // Head menunjuk ke lagu pertama
+    } else {
+        // Cari lagu terakhir di linked list
+        Song* temp = playlist->head;
+        while (temp->next != nullptr) {
+            temp = temp->next;
+        }
+        temp->next = newSong; // Tambahkan lagu baru di akhir list
+    }
 
-//     std::cout << "Song added successfully to playlist '" << playlist->name << "'.\n";
-// }
+    std::cout << "Song added successfully to playlist '" << playlist->name << "'.\n";
+}
 
 // //fungsi untuk menghapus lagu
 // void spotify::deleteSong(Playlist* playlist) {

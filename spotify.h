@@ -22,8 +22,9 @@ namespace spotify {
     void addPlaylist(Playlist *&playlist);
     void deletePlaylist(Playlist *&playlist);
     void selectPlaylist(Playlist *playlist, Playlist **selectedPlaylist, bool &success);
+    void showText(Playlist *&playlist, std::string fileName);
     // void listPlaylistSongs(Playlist* playlist, int sortOption);
-    // void addSong(Playlist *playlist);
+    void addSong(Playlist *playlist);
     // void deleteSong(Playlist* playlist);
 
 
