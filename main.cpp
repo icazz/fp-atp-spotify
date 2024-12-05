@@ -3,7 +3,7 @@
 #include <locale>
 #include <string>
 #include "spotify.h"
-//ini hansen
+
 enum State { MAIN = 1, SONG, PLAYLIST, DETAIL_PLAYLIST};
 enum MainMenu { MENU_SONG = 1, MENU_PLAYLIST, MENU_EXIT };
 enum SongMenu { SONG_BACK = 0, SONG_LIST, SONG_ADD, SONG_DELETE };
@@ -13,8 +13,8 @@ enum PlaylistDetailMenu { PLAYLIST_DETAIL_BACK = 0, PLAYLIST_DETAIL_LIST, PLAYLI
 // Function prototypes
 void mainMenu(State &state);
 void songMenu(State &state, spotify::Song *&song);
-void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist);
-void playlistDetailMenu(State &state, spotify::Playlist *&selectedPlaylist);
+void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist);
+void playlistDetailMenu(State &state, spotify::Playlist *selectedPlaylist);
 
 int main() {
     spotify::Playlist *playlist = nullptr;
@@ -91,8 +91,7 @@ void songMenu(State &state, spotify::Song *&song) {
     }
 }
 
-//FUNGSI PLAYLIST MENU
-void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist) {
+void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist) {
     int choice;
     bool success = false;
 
@@ -115,21 +114,23 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
         spotify::deletePlaylist(playlist);
         break;
     case PLAYLIST_SELECT:
-        // spotify::selectPlaylist(playlist, &selectedPlaylist, success);
-        // if (success && selectedPlaylist){
-        //     state = DETAIL_PLAYLIST;
-        // }
+    {
+        spotify::selectPlaylist(playlist, selectedPlaylist, success);
+        if (success && selectedPlaylist){
+            state = DETAIL_PLAYLIST;
+        }
         break;
+    }
     case PLAYLIST_BACK:
         state = MAIN;
         break;
     }
 }
 
-void playlistDetailMenu(State &state, spotify::Playlist *&selectedPlaylist) {
+void playlistDetailMenu(State &state, spotify::Playlist *selectedPlaylist) {
 
     int choice;
-    //std::cout << "Playlist: " << selectedPlaylist -> name << std::endl;
+    std::cout << "Playlist: " << selectedPlaylist->name << std::endl;
     std::cout << "0. Back\n";
     std::cout << "1. List songs\n";
     std::cout << "2. Add song\n";
@@ -147,10 +148,10 @@ void playlistDetailMenu(State &state, spotify::Playlist *&selectedPlaylist) {
         std::cout << "Choice: ";
         std::cin >> sortChoice;
 
-        //spotify::listPlaylistSongs(selectedPlaylist, sortChoice);
+        spotify::listPlaylistSongs(selectedPlaylist, sortChoice);
         break;
     case PLAYLIST_DETAIL_ADD:
-        // spotify::addSongToPlaylist(selectedPlaylist);
+        spotify::addSongToPlaylist(selectedPlaylist);
         break;
     case PLAYLIST_DETAIL_DELETE:
         // spotify::deleteSongFromPlaylist(selectedPlaylist);

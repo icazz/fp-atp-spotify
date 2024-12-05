@@ -21,10 +21,10 @@ namespace spotify {
     void printPlaylist(Playlist *playlist);
     void addPlaylist(Playlist *&playlist);
     void deletePlaylist(Playlist *&playlist);
-    void selectPlaylist(Playlist *playlist, Playlist **selectedPlaylist, bool &success);
-    // void listPlaylistSongs(Playlist* playlist, int sortOption);
-    // void addSong(Playlist *playlist);
-    // void deleteSong(Playlist* playlist);
+    void selectPlaylist(Playlist *playlist, Playlist *&selectedPlaylist, bool &success);
+    void listPlaylistSongs(Playlist* playlist, int);
+    void addSongToPlaylist(Playlist *selectedPlaylist);
+    void deleteSong(Playlist* playlist);
 
 
     //jangan lupa prototypenya, semangat gusy
