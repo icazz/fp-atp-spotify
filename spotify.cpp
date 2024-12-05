@@ -40,6 +40,41 @@ void spotify::addSong(spotify::Song *&head){
     }
     std::cout<<"Song '" << newSong->title << "' by '" << newSong ->artist << "' added successfully.\n";
 }
+
+void spotify::deleteSong(spotify::Song *&head){
+    if(!head){
+        std::cout << "No songs available to delete.\n";
+        return;
+    }
+
+    std::string songTitle;
+    std::cout<<"Enter the title of the song to delete: ";
+    std::cin.ignore();
+    std::getline(std::cin, songTitle);
+
+    spotify::Song *current = head;
+    spotify::Song *previous = nullptr;
+
+    while(current){
+        if(current->title == songTitle){
+            if(!previous){
+                head = current->next;
+            } else {
+                previous->next = current ->next;
+            }
+
+            delete current;
+
+            std::cout<<"Song '" << songTitle << "' deleted successfully.\n";
+            return;
+        }
+
+        previous = current;
+        current = current->next;
+    }
+    std::cout<<"Song not found.\n";
+}
+
 // FUNGSI UNTUK MENU PLAYLIST
 void spotify::printPlaylist(spotify::Playlist *playlist) {
     if (playlist ==nullptr) {

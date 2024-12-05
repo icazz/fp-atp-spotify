@@ -77,13 +77,13 @@ void songMenu(State &state, spotify::Song *&song) {
 
     switch (choice) {
     case SONG_LIST:
-        // spotify::printSongs(song);
+        spotify::printSongs(song);
         break;
     case SONG_ADD:
-        // spotify::addSong(song);
+        spotify::addSong(song);
         break;
     case SONG_DELETE:
-        // spotify::deleteSong(song);
+        spotify::deleteSong(song);
         break;
     case SONG_BACK:
         state = MAIN;
@@ -91,6 +91,7 @@ void songMenu(State &state, spotify::Song *&song) {
     }
 }
 
+//FUNGSI PLAYLIST MENU
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist) {
     int choice;
     bool success = false;
@@ -114,10 +115,10 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
         spotify::deletePlaylist(playlist);
         break;
     case PLAYLIST_SELECT:
-        spotify::selectPlaylist(playlist, &selectedPlaylist, success);
-        if (success && selectedPlaylist){
-            state = DETAIL_PLAYLIST;
-        }
+        // spotify::selectPlaylist(playlist, &selectedPlaylist, success);
+        // if (success && selectedPlaylist){
+        //     state = DETAIL_PLAYLIST;
+        // }
         break;
     case PLAYLIST_BACK:
         state = MAIN;
