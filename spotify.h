@@ -15,18 +15,18 @@ namespace spotify {
         Song* head = nullptr;
         Playlist* next = nullptr;
     };
+    void showText(Playlist *&text, std::string fileName);
     void printSongs(Song *song);
     void addSong(Song *&head);
     void deleteSong(Song *&head);
     void printPlaylist(Playlist *playlist);
     void addPlaylist(Playlist *&playlist);
     void deletePlaylist(Playlist *&playlist);
-    void selectPlaylist(Playlist *playlist, Playlist **selectedPlaylist, bool &success);
-    void showText(Playlist *&playlist, std::string fileName);
-    // void listPlaylistSongs(Playlist* playlist, int sortOption);
-    void addSong(Playlist *playlist);
-    // void deleteSong(Playlist* playlist);
-
+    void selectPlaylist(Playlist *playlist, Playlist *&selectedPlaylist, bool &success);
+    void listPlaylistSongs(Playlist* playlist, int sortOption);
+    void addSongToPlaylist(Playlist *selectedPlaylist);
+    void deleteSongFromPlaylist(Playlist* playlist);
+    //void showText(Playlist *&playlist, string fileName);
 
     //jangan lupa prototypenya, semangat gusy
     

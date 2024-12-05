@@ -2,6 +2,7 @@
 #include<fstream>
 #include<string>
 #include "spotify.h"
+#include <limits>
 
 //Ni'mah - FUNGSI UNTUK SONGMENU
 void spotify::printSongs(spotify::Song *song){
@@ -158,7 +159,7 @@ void spotify::deletePlaylist(spotify::Playlist *&head) {
     std::cout << "Playlist not found.\n";
 }
 
-void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist **selectedPlaylist, bool &success) {
+void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist *&selectedPlaylist, bool &success) {
     if (!head) {
         std::cout << "No playlists available.\n";
         selectedPlaylist = nullptr; // Perbarui pointer di luar fungsi
@@ -174,7 +175,7 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist **select
     spotify::Playlist *current = head;
     while (current) {
         if (current->name == playlistName) {
-            *selectedPlaylist = current; // Perbarui pointer
+            selectedPlaylist = current; // Perbarui pointer
             success = true;
             std::cout << "Playlist '" << playlistName << "' selected.\n";
             return;
@@ -183,7 +184,7 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist **select
     }
 
     std::cout << "Playlist not found.\n";
-    *selectedPlaylist = nullptr; // Set pointer ke nullptr jika tidak ditemukan
+    selectedPlaylist = nullptr; // Set pointer ke nullptr jika tidak ditemukan
     success = false;
 }
 
@@ -202,124 +203,137 @@ void spotify::showText(spotify::Playlist *&text, std::string fileName){
 
 
 // // FUNGSI UNTUK MENU DETAIL PLAYLIST
+void spotify::listPlaylistSongs(Playlist* playlist, int sortOption) {
+    // Periksa apakah playlist valid dan memiliki lagu
+    if (!playlist || !playlist->head) {
+        std::cout << "Playlist " << playlist->name << " is empty or does not exist.\n";
+        return;
+    }
 
-// void spotify::listPlaylistSongs(Playlist* playlist, int sortOption){
-//     if (!playlist || !playlist->head) {
-//         std::cout << "No songs available in the playlist.\n";
+    // Sorting menggunakan bubble sort sederhana pada linked list
+    bool swapped;
+    do {
+        swapped = false;
+        spotify::Song* current = playlist->head;
+        spotify::Song* prev = nullptr;
+
+        while (current && current->next) {
+            spotify::Song* next = current->next;
+
+            // Bandingkan berdasarkan opsi
+            bool shouldSwap = false;
+            if (sortOption == 1) { // Sort by artist
+                if (current->artist > next->artist) {
+                    shouldSwap = true;
+                }
+            } else if (sortOption == 2) { // Sort by title
+                if (current->title > next->title) {
+                    shouldSwap = true;
+                }
+            }
+
+            // Swap jika diperlukan
+            if (shouldSwap) {
+                if (prev) {
+                    prev->next = next;
+                } else {
+                    playlist->head = next;
+                }
+                current->next = next->next;
+                next->next = current;
+
+                swapped = true;
+            }
+            prev = current;
+            current = current->next;
+        }
+    } while (swapped);
+
+    // Tampilkan daftar lagu
+    std::cout << "Songs in playlist " << playlist->name << ":\n";
+    spotify::Song* current = playlist->head;
+    int index = 1;
+    while (current) {
+        std::cout << index++ << ". " << current->title << " by " << current->artist << "\n";
+        current = current->next;
+    }
+} 
+
+// void spotify::listPlaylistSongs(spotify::Playlist* playlist){
+//     if(playlist->head == nullptr){
+//         std::cout<<"No songs available.\n";
 //         return;
 //     }
 
-//     Song* currentSong = playlist->head;
-//     Song* index = nullptr;
-//     Song temp;
-
-//     // Sorting berdasarkan pilihan 
-//     switch (sortOption) {
-//         case 1: // Sort by artis
-//             for (currentSong = playlist->head; currentSong != nullptr; currentSong = currentSong->next) {
-//                 for (index = currentSong->next; index != nullptr; index = index->next) {
-//                     if (currentSong->artist > index->artist) {
-//                         // Tukar posisi lagu berdasarkan artist
-//                         temp = *currentSong;
-//                         *currentSong = *index;
-//                         *index = temp;
-//                     }
-//                 }
-//             }
-//             std::cout << "Songs sorted by artist.\n";
-//             break;
-
-//         case 2: // Sort by judul
-//             for (currentSong = playlist->head; currentSong != nullptr; currentSong = currentSong->next) {
-//                 for (index = currentSong->next; index != nullptr; index = index->next) {
-//                     if (currentSong->title > index->title) {
-//                         // Tukar posisi lagu berdasarkan judul
-//                         temp = *currentSong;
-//                         *currentSong = *index;
-//                         *index = temp;
-//                     }
-//                 }
-//             }
-//             std::cout << "Songs sorted by title.\n";
-//             break;
-
-//         default: // Default sorting
-//             std::cout << "Invalid sorting option. Showing default order.\n";
-//             break;
-//     }
-
-//     // Menampilkan lagu setelah sorting
-//     std::cout << "Songs in playlist '" << playlist->name << "':\n";
-//     for (Song* song = playlist->head; song != nullptr; song = song->next) {
-//         std::cout << "Title: " << song->title << ", Artist: " << song->artist << "\n";
+//     std::cout << "Songs in playlist "" << playlist->name << "":\n";
+//     spotify::Song* current = playlist->head;
+//     int index = 1;
+//     while (current) {
+//         std::cout << index++ << ". " << current->title << " by " << current->artist << "\n";
+//         current = current->next;
 //     }
 // }
 
 //Fungsi untuk menambahkan lagu
-void spotify::addSong(Playlist *playlist) {
-    if (!playlist) {
-        std::cout << "No playlist selected. Please select a playlist first.\n";
+void spotify::addSongToPlaylist(spotify::Playlist* selectedPlaylist) {
+    std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+    std::string title, artist;
+
+    std::cout << "Enter song title: ";
+    std::getline(std::cin, title);
+
+    std::cout << "Enter artist name: ";
+    std::getline(std::cin, artist);
+
+    // Membuat node baru untuk lagu
+    spotify::Song* newSong = new Song{title, artist, nullptr};
+
+    if (selectedPlaylist->head == nullptr) {
+        // Jika playlist kosong, tambahkan sebagai lagu pertama
+        selectedPlaylist->head = newSong;
+    } else {
+        // Jika playlist sudah berisi lagu, tambahkan di akhir
+        spotify::Song* current = selectedPlaylist->head;
+        while (current->next != nullptr) {
+            current = current->next;
+        }
+        current->next = newSong;
+    }
+}
+
+void spotify::deleteSongFromPlaylist(spotify::Playlist* playlist) {
+    if (!playlist || !playlist->head) {
+        std::cout << "No songs available in the playlist.\n";
         return;
     }
 
-    Song *newSong = new Song;
-    std::cout << "Enter song title: ";
-    std::cin.ignore();
-    std::getline(std::cin, newSong->title);
-    std::cout << "Enter song artist: ";
-    std::getline(std::cin, newSong->artist);
-    newSong->next = nullptr; // Inisialisasi pointer ke lagu berikutnya
+    std::string songTitle;
+    std::cout << "Enter the title of the song to delete: ";
+    std::cin.ignore();  // Untuk menghapus newline yang tertinggal di buffer
+    std::getline(std::cin, songTitle);
 
-    // Jika playlist kosong
-    if (!playlist->head) {
-        playlist->head = newSong; // Head menunjuk ke lagu pertama
-    } else {
-        // Cari lagu terakhir di linked list
-        Song* temp = playlist->head;
-        while (temp->next != nullptr) {
-            temp = temp->next;
+    spotify::Song* current = playlist->head;
+    spotify::Song* previous = nullptr;
+
+    // Cari lagu berdasarkan judul
+    while (current) {
+        if (current->title == songTitle) {
+            // Jika lagu yang dihapus adalah yang pertama (head)
+            if (!previous) {
+                playlist->head = current->next;
+            } else {
+                // Jika lagu ada di tengah atau akhir
+                previous->next = current->next;
+            }
+
+            delete current;  // Hapus memori lagu yang ditemukan
+            std::cout << "Song '" << songTitle << "' deleted successfully.\n";
+            return;
         }
-        temp->next = newSong; // Tambahkan lagu baru di akhir list
+        previous = current;
+        current = current->next;
     }
 
-    std::cout << "Song added successfully to playlist '" << playlist->name << "'.\n";
+    // Jika lagu tidak ditemukan
+    std::cout << "Song not found in the playlist.\n";
 }
-
-// //fungsi untuk menghapus lagu
-// void spotify::deleteSong(Playlist* playlist) {
-//     if (!playlist || !playlist->head) {
-//         std::cout << "No songs available in the playlist.\n";
-//         return;
-//     }
-
-//     std::string songTitle;
-//     std::cout << "Enter the title of the song to delete: ";
-//     std::cin.ignore();
-//     std::getline(std::cin, songTitle);
-
-//     Song* current = playlist->head;
-//     Song* previous = nullptr;
-
-//     // Cari lagu berdasarkan judul
-//     while (current) {
-//         if (current->title == songTitle) {
-//             if (!previous) {
-//                 // Jika lagu yang dihapus adalah head
-//                 playlist->head = current->next;
-//             } else {
-//                 // Jika lagu ada di tengah atau di akhir
-//                 previous->next = current->next;
-//             }
-//             delete current;
-//             std::cout << "Song '" << songTitle << "' deleted successfully.\n";
-//             return;
-//         }
-//         previous = current;
-//         current = current->next;
-//     }
-
-//     std::cout << "Song not found in the playlist.\n";
-// }
-
-
-
