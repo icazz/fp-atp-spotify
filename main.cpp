@@ -14,7 +14,7 @@ enum PlaylistDetailMenu { PLAYLIST_DETAIL_BACK = 0, PLAYLIST_DETAIL_LIST, PLAYLI
 void mainMenu(State &state);
 void songMenu(State &state, spotify::Song *&song);
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist);
-void playlistDetailMenu(State &state, spotify::Playlist *selectedPlaylist);
+void playlistDetailMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist);
 
 int main() {
     spotify::Playlist *playlist = nullptr;
@@ -37,7 +37,7 @@ int main() {
             playlistMenu(state, playlist, selectedPlaylist);
             break;
         case DETAIL_PLAYLIST:
-            playlistDetailMenu(state, selectedPlaylist);
+            playlistDetailMenu(state, playlist, selectedPlaylist);
             break;
         }
         if (end) break;
@@ -130,7 +130,7 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
     }
 }
 
-void playlistDetailMenu(State &state, spotify::Playlist *selectedPlaylist) {
+void playlistDetailMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist) {
 
     int choice;
     std::cout << "Playlist: " << selectedPlaylist->name << std::endl;
@@ -154,10 +154,10 @@ void playlistDetailMenu(State &state, spotify::Playlist *selectedPlaylist) {
         spotify::listPlaylistSongs(selectedPlaylist, sortChoice);
         break;
     case PLAYLIST_DETAIL_ADD:
-        spotify::addSongToPlaylist(selectedPlaylist);
+        spotify::addSongToPlaylist(playlist, selectedPlaylist);
         break;
     case PLAYLIST_DETAIL_DELETE:
-        spotify::deleteSongFromPlaylist(selectedPlaylist);
+        spotify::deleteSongFromPlaylist(playlist, selectedPlaylist);
         break;
     case PLAYLIST_DETAIL_BACK:
         state = PLAYLIST;

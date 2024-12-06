@@ -190,16 +190,24 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist *&select
 
 void spotify::showText(spotify::Playlist *&text, std::string fileName){
     spotify::Playlist *show_text = text;
+    spotify::Song* current;
     std::ofstream outFile(fileName, std::ios::out);
             int counter = 1;
             while (show_text) {
+                current = show_text->head;
                 outFile.close(); // Close the file before reopening in overwrite mode
                 outFile.open(fileName, std::ios::app); // Reopen the file in overwrite mode
                 outFile << counter << ". " << show_text->name << std::endl;
+                while(current){
+                    outFile << current->title << " by "<< current->artist <<std::endl;
+                    current = current->next;
+                }
                 counter++;
                 show_text = show_text->next;
             }
 }
+
+
 
 
 // // FUNGSI UNTUK MENU DETAIL PLAYLIST
@@ -275,7 +283,7 @@ void spotify::listPlaylistSongs(Playlist* playlist, int sortOption) {
 // }
 
 //Fungsi untuk menambahkan lagu
-void spotify::addSongToPlaylist(spotify::Playlist* selectedPlaylist) {
+void spotify::addSongToPlaylist(spotify::Playlist *&playlist, spotify::Playlist*selectedPlaylist) {
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string title, artist;
 
@@ -299,10 +307,12 @@ void spotify::addSongToPlaylist(spotify::Playlist* selectedPlaylist) {
         }
         current->next = newSong;
     }
+    
+    showText(playlist, "PlaylistAku.txt");
 }
 
-void spotify::deleteSongFromPlaylist(spotify::Playlist* playlist) {
-    if (!playlist || !playlist->head) {
+void spotify::deleteSongFromPlaylist(spotify::Playlist *&playlist, spotify::Playlist* selectedPlaylist) {
+    if (!selectedPlaylist || !selectedPlaylist->head) {
         std::cout << "No songs available in the playlist.\n";
         return;
     }
@@ -312,7 +322,7 @@ void spotify::deleteSongFromPlaylist(spotify::Playlist* playlist) {
     std::cin.ignore();  // Untuk menghapus newline yang tertinggal di buffer
     std::getline(std::cin, songTitle);
 
-    spotify::Song* current = playlist->head;
+    spotify::Song* current = selectedPlaylist->head;
     spotify::Song* previous = nullptr;
 
     // Cari lagu berdasarkan judul
@@ -320,7 +330,7 @@ void spotify::deleteSongFromPlaylist(spotify::Playlist* playlist) {
         if (current->title == songTitle) {
             // Jika lagu yang dihapus adalah yang pertama (head)
             if (!previous) {
-                playlist->head = current->next;
+                selectedPlaylist->head = current->next;
             } else {
                 // Jika lagu ada di tengah atau akhir
                 previous->next = current->next;
@@ -328,6 +338,9 @@ void spotify::deleteSongFromPlaylist(spotify::Playlist* playlist) {
 
             delete current;  // Hapus memori lagu yang ditemukan
             std::cout << "Song '" << songTitle << "' deleted successfully.\n";
+
+            showText(playlist, "PlaylistAku.txt");
+
             return;
         }
         previous = current;
