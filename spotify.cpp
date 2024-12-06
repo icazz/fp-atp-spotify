@@ -98,9 +98,18 @@ void spotify::printPlaylist(spotify::Playlist *playlist) {
 
 void spotify::addPlaylist(spotify::Playlist *&playlist) {
     spotify::Playlist *newPlaylist = new spotify::Playlist;
+    spotify::Playlist *current = playlist;
     std::cout << "Enter playlist name: ";
     std::cin.ignore();
     getline(std::cin, newPlaylist->name);
+
+    while (current) {
+        if (current->name == newPlaylist->name) {
+            std::cout << "PLEASE INPUT ANOTHER NAME" << std::endl;
+            return;
+        }
+        current = current->next;
+    }
     newPlaylist->head = nullptr;
     newPlaylist->next = nullptr;
 
@@ -117,6 +126,7 @@ void spotify::addPlaylist(spotify::Playlist *&playlist) {
     showText(playlist, "PlaylistAku.txt");
 
     std::cout << "Playlist '" << newPlaylist->name << "' added successfully!\n";
+    
 }
 
 void spotify::deletePlaylist(spotify::Playlist *&head) {
