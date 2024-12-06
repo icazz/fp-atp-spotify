@@ -24,8 +24,8 @@ namespace spotify {
     void deletePlaylist(Playlist *&playlist);
     void selectPlaylist(Playlist *playlist, Playlist *&selectedPlaylist, bool &success);
     void listPlaylistSongs(Playlist* playlist, int sortOption);
-    void addSongToPlaylist(Playlist *selectedPlaylist);
-    void deleteSongFromPlaylist(Playlist* playlist);
+    void addSongToPlaylist(Playlist *&playlist, Playlist *selectedPlaylist);
+    void deleteSongFromPlaylist(Playlist *&playlist, Playlist* selectedPlaylist);
     //void showText(Playlist *&playlist, string fileName);
 
     //jangan lupa prototypenya, semangat gusy
