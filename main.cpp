@@ -11,6 +11,7 @@ enum PlaylistMenu { PLAYLIST_BACK = 0, PLAYLIST_LIST, PLAYLIST_ADD, PLAYLIST_DEL
 enum PlaylistDetailMenu { PLAYLIST_DETAIL_BACK = 0, PLAYLIST_DETAIL_LIST, PLAYLIST_DETAIL_ADD, PLAYLIST_DETAIL_DELETE };
 
 // Function prototypes
+//void displaySpotBanner();
 void mainMenu(State &state);
 void songMenu(State &state, spotify::Song *&song);
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist);
@@ -24,6 +25,22 @@ int main() {
     State state = MAIN;
     
     std::ofstream outFile("PlaylistAku.txt", std::ios::app);
+
+    std::cout << R"(
+
+
+   _____             _   _  __            
+  / ____|           | | (_)/ _|           
+ | (___  _ __   ___ | |_ _| |_ ___ _   _  
+  \___ \| '_ \ / _ \| __| |  _/ _ \ | | | 
+  ____) | |_) | (_) | |_| | ||  __/ |_| | 
+ |_____/| .__/ \___/ \__|_|_| \___|\__, | 
+        | |                         __/ | 
+        |_|                        |___/  
+
+             Welcome to Spot!
+    Our Personal Music Playlist Manager
+    )" << std::endl;
 
     while (true) {
         switch (state) {
