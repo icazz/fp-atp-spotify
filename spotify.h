@@ -15,9 +15,10 @@ namespace spotify {
         Song* head = nullptr;
         Playlist* next = nullptr;
     };
-    void displaySpotBanner();
+
+    void updateRecomendationSongs(Song *&song);
     void showText(Playlist *&text, std::string fileName);
-    void printSongs(Song *song);
+    void listSongs(Song *song);
     void addSong(Song *&head);
     void deleteSong(Song *&head);
     void printPlaylist(Playlist *playlist);

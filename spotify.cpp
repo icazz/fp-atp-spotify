@@ -5,7 +5,26 @@
 #include <limits>
 
 //Ni'mah - FUNGSI UNTUK SONGMENU
-void spotify::printSongs(spotify::Song *song){
+void spotify::updateRecomendationSongs(spotify::Song *&head) {
+    if (!head) return; // Jika head kosong, keluar dari fungsi
+    
+    spotify::Song *current = head;
+    std::ofstream outFile("RecomendationSongs.txt", std::ios::out);
+    
+    if (!outFile) {
+        std::cerr << "Error opening file: RecomendationSongs.txt\n";
+        return;
+    }
+
+    while (current) {
+        outFile << current->title << " - " << current->artist << std::endl;
+        current = current->next;
+    }
+    outFile.close();
+}
+
+
+void spotify::listSongs(spotify::Song *song){
     if(song == nullptr){
         std::cout<<"No songs available.\n";
         return;
@@ -40,6 +59,7 @@ void spotify::addSong(spotify::Song *&head){
         temp->next = newSong;
     }
     std::cout<<"Song '" << newSong->title << "' by '" << newSong ->artist << "' added successfully.\n";
+    updateRecomendationSongs(head);
 }
 
 void spotify::deleteSong(spotify::Song *&head){
@@ -67,6 +87,7 @@ void spotify::deleteSong(spotify::Song *&head){
             delete current;
 
             std::cout<<"Song '" << songTitle << "' deleted successfully.\n";
+            updateRecomendationSongs(head);
             return;
         }
 

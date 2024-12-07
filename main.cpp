@@ -21,6 +21,34 @@ int main() {
     spotify::Playlist *playlist = nullptr;
     spotify::Playlist *selectedPlaylist = nullptr;
     spotify::Song *song = nullptr;
+    spotify::Song* tail = nullptr;
+    std::ifstream file("RecomendationSongs.txt"); // Membuka file teks
+    std::string line;
+
+    while (getline(file, line)) {
+        size_t delimiterPos = line.find(" - ");
+        if (delimiterPos != std::string::npos) {
+            std::string title = line.substr(0, delimiterPos);
+            std::string artist = line.substr(delimiterPos + 3);
+
+            // Membuat node baru untuk lagu
+            spotify::Song* newSong = new spotify::Song{title, artist, nullptr};
+
+            // Menambahkan node ke linked list
+            if (!song) {
+                song = newSong;
+                tail = newSong;
+            } else {
+                tail->next = newSong;
+                tail = newSong;
+            }
+        } else {
+            std::cerr << "Invalid format: " << line << std::endl;
+        }
+    }
+
+    file.close();
+
     bool end = false;
     State state = MAIN;
     
@@ -97,7 +125,7 @@ void songMenu(State &state, spotify::Song *&song) {
 
     switch (choice) {
     case SONG_LIST:
-        spotify::printSongs(song);
+        spotify::listSongs(song);
         break;
     case SONG_ADD:
         spotify::addSong(song);
