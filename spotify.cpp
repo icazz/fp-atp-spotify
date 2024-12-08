@@ -1,8 +1,8 @@
 #include<iostream>
 #include<fstream>
 #include<string>
-#include "spotify.h"
 #include <limits>
+#include "spotify.h"
 
 //Ni'mah - FUNGSI UNTUK SONGMENU
 void spotify::updateRecomendationSongs(spotify::Song *&head) {
@@ -24,17 +24,69 @@ void spotify::updateRecomendationSongs(spotify::Song *&head) {
 }
 
 
-void spotify::listSongs(spotify::Song *song){
+void spotify::listSongs(spotify::Song *&song){
     if(song == nullptr){
         std::cout<<"No songs available.\n";
         return;
     }
 
-    std::cout<<"Songs:\n";
+    // Cek jika lebih dari satu lagu sorting dulu
+    if (song && song->next) { // Memastikan ada lebih dari satu lagu
+        int sortChoice;
+        std::cout << "Sort songs:\n";
+        std::cout << "1. By artist\n";
+        std::cout << "2. By title\n";
+        std::cout << "Choice: ";
+        std::cin >> sortChoice;
+
+        // Sorting menggunakan bubble sort sederhana pada linked list
+        bool swapped;
+        do {
+            swapped = false;
+            spotify::Song* current = song;
+            spotify::Song* prev = nullptr;
+
+            while (current && current->next) {
+                spotify::Song* next = current->next;
+
+                // Bandingkan berdasarkan opsi
+                bool shouldSwap = false;
+                if (sortChoice == 1) { // Sort by artist
+                    if (current->artist > next->artist) {
+                        shouldSwap = true;
+                    }
+                } else if (sortChoice == 2) { // Sort by title
+                    if (current->title > next->title) {
+                        shouldSwap = true;
+                    }
+                }
+
+                // Swap jika diperlukan
+                if (shouldSwap) {
+                    if (prev) {
+                        prev->next = next;
+                    } else {
+                        song = next;
+                    }
+                    current->next = next->next;
+                    next->next = current;
+
+                    swapped = true;
+                }
+                prev = current;
+                current = current->next;
+            }
+        } while (swapped);
+    }
+
+    updateRecomendationSongs(song);
+    // Menggunakan pointer sementara untuk iterasi
+    spotify::Song* temp = song;
+    std::cout << "Songs:\n";
     int count = 1;
-    while(song){
-        std::cout<< count++ << ". Title: " << song->title << ", Artist: " << song->artist << "\n";
-        song = song->next;
+    while (temp) {
+        std::cout << count++ << ". Title: " << temp->title << ", Artist: " << temp->artist << "\n";
+        temp = temp->next; // Pointer temp maju, song tetap di head
     }
 }
 
@@ -242,53 +294,62 @@ void spotify::showText(spotify::Playlist *&text, std::string fileName){
 }
 
 
-// // FUNGSI UNTUK MENU DETAIL PLAYLIST
-void spotify::listPlaylistSongs(Playlist* playlist, int sortOption) {
+// FUNGSI UNTUK MENU DETAIL PLAYLIST
+void spotify::listPlaylistSongs(Playlist* playlist) {
     // Periksa apakah playlist valid dan memiliki lagu
     if (!playlist || !playlist->head) {
         std::cout << "Playlist " << playlist->name << " is empty or does not exist.\n";
         return;
     }
+    // Cek jika lebih dari satu lagu sorting dulu
+    if (playlist->head && playlist->head->next){
+        int sortChoice;
+        std::cout << "Sort songs:\n";
+        std::cout << "1. By artist\n";
+        std::cout << "2. By title\n";
+        std::cout << "Choice: ";
+        std::cin >> sortChoice;
 
-    // Sorting menggunakan bubble sort sederhana pada linked list
-    bool swapped;
-    do {
-        swapped = false;
-        spotify::Song* current = playlist->head;
-        spotify::Song* prev = nullptr;
+        // Sorting menggunakan bubble sort sederhana pada linked list
+        bool swapped;
+        do {
+            swapped = false;
+            spotify::Song* current = playlist->head;
+            spotify::Song* prev = nullptr;
 
-        while (current && current->next) {
-            spotify::Song* next = current->next;
+            while (current && current->next) {
+                spotify::Song* next = current->next;
 
-            // Bandingkan berdasarkan opsi
-            bool shouldSwap = false;
-            if (sortOption == 1) { // Sort by artist
-                if (current->artist > next->artist) {
-                    shouldSwap = true;
+                // Bandingkan berdasarkan opsi
+                bool shouldSwap = false;
+                if (sortChoice == 1) { // Sort by artist
+                    if (current->artist > next->artist) {
+                        shouldSwap = true;
+                    }
+                } else if (sortChoice == 2) { // Sort by title
+                    if (current->title > next->title) {
+                        shouldSwap = true;
+                    }
                 }
-            } else if (sortOption == 2) { // Sort by title
-                if (current->title > next->title) {
-                    shouldSwap = true;
+
+                // Swap jika diperlukan
+                if (shouldSwap) {
+                    if (prev) {
+                        prev->next = next;
+                    } else {
+                        playlist->head = next;
+                    }
+                    current->next = next->next;
+                    next->next = current;
+
+                    swapped = true;
                 }
+                prev = current;
+                current = current->next;
             }
-
-            // Swap jika diperlukan
-            if (shouldSwap) {
-                if (prev) {
-                    prev->next = next;
-                } else {
-                    playlist->head = next;
-                }
-                current->next = next->next;
-                next->next = current;
-
-                swapped = true;
-            }
-            prev = current;
-            current = current->next;
-        }
-    } while (swapped);
-
+        } while (swapped);
+    }
+    
     // Tampilkan daftar lagu
     std::cout << "Songs in playlist " << playlist->name << ":\n";
     spotify::Song* current = playlist->head;
@@ -297,22 +358,8 @@ void spotify::listPlaylistSongs(Playlist* playlist, int sortOption) {
         std::cout << index++ << ". " << current->title << " by " << current->artist << "\n";
         current = current->next;
     }
-} 
-
-// void spotify::listPlaylistSongs(spotify::Playlist* playlist){
-//     if(playlist->head == nullptr){
-//         std::cout<<"No songs available.\n";
-//         return;
-//     }
-
-//     std::cout << "Songs in playlist "" << playlist->name << "":\n";
-//     spotify::Song* current = playlist->head;
-//     int index = 1;
-//     while (current) {
-//         std::cout << index++ << ". " << current->title << " by " << current->artist << "\n";
-//         current = current->next;
-//     }
-// }
+    showText(playlist, "PlaylistAku.txt");
+}
 
 //Fungsi untuk menambahkan lagu
 void spotify::addSongToPlaylist(spotify::Playlist *&playlist, spotify::Playlist* selectedPlaylist) {

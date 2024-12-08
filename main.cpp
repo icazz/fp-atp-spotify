@@ -66,7 +66,7 @@ int main() {
         | |                         __/ | 
         |_|                        |___/  
 
-             Welcome to Spot!
+          Welcome to Spotifey!
     Our Personal Music Playlist Manager
     )" << std::endl;
 
@@ -109,6 +109,12 @@ void mainMenu(State &state) {
         break;
     case MENU_EXIT:
         std::ofstream outFile("PlaylistAku.txt", std::ios::out);
+        if (!outFile) {
+            std::cerr << "Error: Unable to open PlaylistAku.txt\n";
+            break;
+        }
+        outFile.close(); // Pastikan file tertutup
+        std::cout << "Exiting program...\n";
         std::exit(0);
     }
 }
@@ -135,6 +141,9 @@ void songMenu(State &state, spotify::Song *&song) {
         break;
     case SONG_BACK:
         state = MAIN;
+        break;
+    default:
+        std::cout << "Invalid choice.\n";
         break;
     }
 }
@@ -172,6 +181,9 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
     case PLAYLIST_BACK:
         state = MAIN;
         break;
+    default:
+        std::cout << "Invalid choice.\n";
+        break;
     }
 }
 
@@ -188,15 +200,7 @@ void playlistDetailMenu(State &state, spotify::Playlist *&playlist, spotify::Pla
 
     switch (choice) {
     case PLAYLIST_DETAIL_LIST:
-        int sortChoice;
-        std::cout << "Sort songs:\n";
-        std::cout << "0. Default\n";
-        std::cout << "1. By artist\n";
-        std::cout << "2. By title\n";
-        std::cout << "Choice: ";
-        std::cin >> sortChoice;
-
-        spotify::listPlaylistSongs(selectedPlaylist, sortChoice);
+        spotify::listPlaylistSongs(selectedPlaylist);
         break;
     case PLAYLIST_DETAIL_ADD:
         spotify::addSongToPlaylist(playlist, selectedPlaylist);
