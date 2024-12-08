@@ -9,6 +9,11 @@ void spotify::updateRecomendationSongs(spotify::Song *&head) {
     
     spotify::Song *current = head;
     std::ofstream outFile("RecomendationSongs.txt", std::ios::out);
+    outFile<< R"(
+┬─┐┌─┐┌─┐┌─┐┌┬┐┌┬┐┌─┐┌┐┌┌┬┐┌─┐┌┬┐┬┌─┐┌┐┌  ┌─┐┌─┐┌┐┌┌─┐
+├┬┘├┤ │  │ │││││││├┤ │││ ││├─┤ │ ││ ││││  └─┐│ │││││ ┬
+┴└─└─┘└─┘└─┘┴ ┴┴ ┴└─┘┘└┘─┴┘┴ ┴ ┴ ┴└─┘┘└┘  └─┘└─┘┘└┘└─┘
+)";
     
     if (!outFile) {
         std::cerr << "Error opening file: RecomendationSongs.txt\n";
@@ -32,7 +37,7 @@ void spotify::listSongs(spotify::Song *&song){
     // Cek jika lebih dari satu lagu sorting dulu
     if (song && song->next) { // Memastikan ada lebih dari satu lagu
         int sortChoice;
-        std::cout << "Sort songs:\n";
+        std::cout << "\nSort songs:\n";
         std::cout << "1. By artist\n";
         std::cout << "2. By title\n";
         std::cout << "Choice: ";
@@ -81,17 +86,18 @@ void spotify::listSongs(spotify::Song *&song){
     updateRecomendationSongs(song);
     // Menggunakan pointer sementara untuk iterasi
     spotify::Song* temp = song;
+    std::cout << "===============================================\n";
     std::cout << "Songs:\n";
     int count = 1;
     while (temp) {
-        std::cout << count++ << ". Title: " << temp->title << ", Artist: " << temp->artist << "\n";
+        std::cout << count++ << ". " << temp->title << " by " << temp->artist << "\n";
         temp = temp->next; // Pointer temp maju, song tetap di head
     }
 }
 
 void spotify::addSong(spotify::Song *&head){
     spotify::Song *newSong = new spotify::Song;
-    std::cout<< "Enter song title: ";
+    std::cout<< "\nEnter song title: ";
     std::cin.ignore();
     std::getline(std::cin, newSong->title);
 
@@ -120,7 +126,7 @@ void spotify::deleteSong(spotify::Song *&head){
     }
 
     std::string songTitle;
-    std::cout<<"Enter the title of the song to delete: ";
+    std::cout<<"\nEnter the title of the song to delete: ";
     std::cin.ignore();
     std::getline(std::cin, songTitle);
 
@@ -163,15 +169,14 @@ void spotify::printPlaylist(spotify::Playlist *playlist) {
         std::cout << count++ << ". " << temp->name << std::endl;
         temp = temp->next;
     }
-    
-    showText(playlist, "PlaylistAku.txt");
+        showText(playlist, "PlaylistAku.txt");
 
 }
 
 void spotify::addPlaylist(spotify::Playlist *&playlist) {
     spotify::Playlist *newPlaylist = new spotify::Playlist;
     spotify::Playlist *current = playlist;
-    std::cout << "Enter playlist name: ";
+    std::cout << "\nEnter playlist name: ";
     std::cin.ignore();
     getline(std::cin, newPlaylist->name);
 
@@ -208,7 +213,7 @@ void spotify::deletePlaylist(spotify::Playlist *&head) {
     }
 
     std::string playlistName;
-    std::cout << "Enter the name of the playlist to delete: ";
+    std::cout << "\nEnter the name of the playlist to delete: ";
     std::cin.ignore();
     std::getline(std::cin, playlistName);
 
@@ -231,6 +236,7 @@ void spotify::deletePlaylist(spotify::Playlist *&head) {
             showText(head, "PlaylistAku.txt");
         
             std::cout << "Playlist '" << playlistName << "' deleted successfully.\n";
+
             return;
         }
         previous = current;
@@ -250,7 +256,7 @@ void spotify::selectPlaylist(spotify::Playlist *head, spotify::Playlist *&select
     }
 
     std::string playlistName;
-    std::cout << "Enter the name of the playlist to select: ";
+    std::cout << "\nEnter the name of the playlist to select: ";
     std::cin.ignore();
     std::getline(std::cin, playlistName);
 
@@ -276,6 +282,12 @@ void spotify::showText(spotify::Playlist *&text, std::string fileName){
     std::ofstream outFile(fileName, std::ios::out);
             int counter = 1;
             char count;
+            outFile << 
+ R"(
+┌┬┐┬ ┬  ┌─┐┬  ┌─┐┬ ┬┬  ┬┌─┐┌┬┐
+│││└┬┘  ├─┘│  ├─┤└┬┘│  │└─┐ │ 
+┴ ┴ ┴   ┴  ┴─┘┴ ┴ ┴ ┴─┘┴└─┘ ┴        
+)";
             while (show_text) {
                 current = show_text->head;
                 outFile.close(); // Close the file before reopening in overwrite mode
@@ -303,7 +315,7 @@ void spotify::listPlaylistSongs(Playlist* playlist) {
     // Cek jika lebih dari satu lagu sorting dulu
     if (playlist->head && playlist->head->next){
         int sortChoice;
-        std::cout << "Sort songs:\n";
+        std::cout << "\nSort songs:\n";
         std::cout << "1. By artist\n";
         std::cout << "2. By title\n";
         std::cout << "Choice: ";
@@ -350,6 +362,7 @@ void spotify::listPlaylistSongs(Playlist* playlist) {
     }
     
     // Tampilkan daftar lagu
+    std::cout << "\n===============================================\n";
     std::cout << "Songs in playlist " << playlist->name << ":\n";
     spotify::Song* current = playlist->head;
     int index = 1;
@@ -365,7 +378,7 @@ void spotify::addSongToPlaylist(spotify::Playlist *&playlist, spotify::Playlist*
     std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
     std::string title, artist;
 
-    std::cout << "Enter song title: ";
+    std::cout << "\nEnter song title: ";
     std::getline(std::cin, title);
 
     std::cout << "Enter artist name: ";
@@ -395,7 +408,7 @@ void spotify::deleteSongFromPlaylist(spotify::Playlist *&playlist, spotify::Play
     }
 
     std::string songTitle;
-    std::cout << "Enter the title of the song to delete: ";
+    std::cout << "\nEnter the title of the song to delete: ";
     std::cin.ignore();  // Untuk menghapus newline yang tertinggal di buffer
     std::getline(std::cin, songTitle);
 

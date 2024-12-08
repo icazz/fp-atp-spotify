@@ -90,11 +90,18 @@ int main() {
 
 void mainMenu(State &state) {
     int choice;
+    std::cout << "===============================================\n";
+    std::cout << R"(
+|\/| _ . _   |\/| _  _    
+|  |(_||| |  |  |(/_| ||_|
+
+)";
+                          
 
     std::cout << "1. Song\n";
     std::cout << "2. Playlist\n";
     std::cout << "3. Exit\n";
-    std::cout << "Choice: ";
+    std::cout << "Choose (1/2/3): ";
     std::cin >> choice;
 
     switch (choice) {
@@ -118,12 +125,19 @@ void mainMenu(State &state) {
 
 void songMenu(State &state, spotify::Song *&song) {
     int choice;
+    std::cout << "===============================================\n";
+    std::cout << R"(
+ _
+(  _  _  _   |\/| _  _    
+_)(_)| |(_|  |  |(/_| ||_|
+         _|               
 
+)";
     std::cout << "0. Back\n";
     std::cout << "1. List songs\n";
     std::cout << "2. Add song\n";
     std::cout << "3. Delete song\n";
-    std::cout << "Choice: ";
+    std::cout << "Choose (0/1/2/3): ";
     std::cin >> choice;
 
     switch (choice) {
@@ -148,13 +162,18 @@ void songMenu(State &state, spotify::Song *&song) {
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist) {
     int choice;
     bool success = false;
-
+    std::cout << "===============================================\n";
+    std::cout << R"(
+|_)| _   |. __|_  |\/| _  _    
+|  |(_|\/||_\ |   |  |(/_| ||_|
+       /                       
+)";
     std::cout << "0. Back\n";
     std::cout << "1. List playlists\n";
     std::cout << "2. Add playlist\n";
     std::cout << "3. Delete playlist\n";
     std::cout << "4. Select playlist\n";
-    std::cout << "Choice: ";
+    std::cout << "Choose (0/1/2/3/4): ";
     std::cin >> choice;
 
     switch (choice) {
@@ -187,12 +206,18 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
 void playlistDetailMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist) {
 
     int choice;
+    std::cout << "===============================================\n";
+    std::cout << R"(
+|\/|    |_)| _   |. __|_
+|  |\/  |  |(_|\/||_\ | 
+    /          /        
+)";
     std::cout << "Playlist: " << selectedPlaylist->name << std::endl;
     std::cout << "0. Back\n";
     std::cout << "1. List songs\n";
     std::cout << "2. Add song\n";
     std::cout << "3. Delete song\n";
-    std::cout << "Choice: ";
+    std::cout << "Choose (0/1/2/3): ";
     std::cin >> choice;
 
     switch (choice) {
