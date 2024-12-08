@@ -4,7 +4,6 @@
 #include <limits>
 #include "spotify.h"
 
-//Ni'mah - FUNGSI UNTUK SONGMENU
 void spotify::updateRecomendationSongs(spotify::Song *&head) {
     if (!head) return; // Jika head kosong, keluar dari fungsi
     

@@ -11,7 +11,6 @@ enum PlaylistMenu { PLAYLIST_BACK = 0, PLAYLIST_LIST, PLAYLIST_ADD, PLAYLIST_DEL
 enum PlaylistDetailMenu { PLAYLIST_DETAIL_BACK = 0, PLAYLIST_DETAIL_LIST, PLAYLIST_DETAIL_ADD, PLAYLIST_DETAIL_DELETE };
 
 // Function prototypes
-//void displaySpotBanner();
 void mainMenu(State &state);
 void songMenu(State &state, spotify::Song *&song);
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist);
@@ -31,10 +30,8 @@ int main() {
             std::string title = line.substr(0, delimiterPos);
             std::string artist = line.substr(delimiterPos + 3);
 
-            // Membuat node baru untuk lagu
             spotify::Song* newSong = new spotify::Song{title, artist, nullptr};
 
-            // Menambahkan node ke linked list
             if (!song) {
                 song = newSong;
                 tail = newSong;
