@@ -11,6 +11,7 @@ enum PlaylistMenu { PLAYLIST_BACK = 0, PLAYLIST_LIST, PLAYLIST_ADD, PLAYLIST_DEL
 enum PlaylistDetailMenu { PLAYLIST_DETAIL_BACK = 0, PLAYLIST_DETAIL_LIST, PLAYLIST_DETAIL_ADD, PLAYLIST_DETAIL_DELETE };
 
 // Function prototypes
+void printWithRGB(std::string text, int rStart, int gStart, int bStart, int rEnd, int gEnd, int bEnd);
 void mainMenu(State &state);
 void songMenu(State &state, spotify::Song *&song);
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist);
@@ -39,9 +40,9 @@ int main() {
                 tail->next = newSong;
                 tail = newSong;
             }
-        } else {
-            std::cerr << "Invalid format: " << line << std::endl;
-        }
+         } //else {
+        //     std::cerr << "Invalid format: " << line << std::endl;
+        // }
     }
 
     file.close();
@@ -50,22 +51,18 @@ int main() {
     State state = MAIN;
     
     std::ofstream outFile("PlaylistAku.txt", std::ios::app);
+    
+    printWithRGB("  _____             _   _  __            ", 29, 100, 84, 120, 255, 120);
+    printWithRGB(" / ____|           | | (_)/ _|           ", 29, 110, 84, 120, 255, 120); 
+    printWithRGB("| (___  _ __   ___ | |_ _| |_ ___ _   _  ", 29, 120, 84, 120, 255, 120);
+    printWithRGB(" \\___ \\| '_ \\ / _ \\| __| |  _/ _ \\ | | | ", 29, 130, 84, 120, 255, 120);
+    printWithRGB(" ____) | |_) | (_) | |_| | ||  __/ |_| | ", 29, 140, 84, 120, 255, 120);
+    printWithRGB("|_____/| .__/ \\___/ \\__|_|_| \\___|\\__, | ", 29, 150, 84, 120, 255, 120);
+    printWithRGB("       | |                         __/ | ", 29, 160, 84, 120, 255, 120);
+    printWithRGB("       |_|                        |___/  ", 29, 170, 84, 120, 255, 120);
 
-    std::cout << R"(
-
-
-   _____             _   _  __            
-  / ____|           | | (_)/ _|           
- | (___  _ __   ___ | |_ _| |_ ___ _   _  
-  \___ \| '_ \ / _ \| __| |  _/ _ \ | | | 
-  ____) | |_) | (_) | |_| | ||  __/ |_| | 
- |_____/| .__/ \___/ \__|_|_| \___|\__, | 
-        | |                         __/ | 
-        |_|                        |___/  
-
-          Welcome to Spotifey!
-    Our Personal Music Playlist Manager
-    )" << std::endl;
+    printWithRGB("          Welcome to Spotifey!           ", 30, 215, 96, 120, 255, 120);
+    printWithRGB("    Our Personal Music Playlist Manager  ", 30, 215, 96, 120, 255, 120); 
 
     while (true) {
         switch (state) {
@@ -88,14 +85,28 @@ int main() {
     return 0;
 }
 
+void printWithRGB(std::string text, int rStart, int gStart, int bStart, int rEnd, int gEnd, int bEnd) {
+    int stepR = (rEnd - rStart) / text.length();
+    int stepG = (gEnd - gStart) / text.length();
+    int stepB = (bEnd - bStart) / text.length();
+
+    for (std::size_t i = 0; i < text.length(); i++) {
+        int rValue = rStart + (stepR * i);
+        int gValue = gStart + (stepG * i);
+        int bValue = bStart + (stepB * i);
+
+        std::cout << "\033[38;2;" << rValue << ";" << gValue << ";" << bValue << "m" << text[i] << "\033[0m";
+    }
+    std::cout << std::endl;
+}
+
 void mainMenu(State &state) {
     int choice;
-    std::cout << "===============================================\n";
-    std::cout << R"(
+    std::cout << "\033[38;2;255;255;0m===============================================\033[0m\n";
+    std::cout << "\033[38;2;255;182;193m" R"(
 |\/| _ . _   |\/| _  _    
 |  |(_||| |  |  |(/_| ||_|
-
-)";
+    )" "\033[0m\n";
                           
 
     std::cout << "1. Song\n";
@@ -125,14 +136,14 @@ void mainMenu(State &state) {
 
 void songMenu(State &state, spotify::Song *&song) {
     int choice;
-    std::cout << "===============================================\n";
-    std::cout << R"(
+    std::cout << "\033[38;2;255;255;0m===============================================\033[0m\n";
+    std::cout << "\033[38;2;255;182;193m" R"(
  _
 (  _  _  _   |\/| _  _    
 _)(_)| |(_|  |  |(/_| ||_|
          _|               
 
-)";
+)" "\033[0m\n";
     std::cout << "0. Back\n";
     std::cout << "1. List songs\n";
     std::cout << "2. Add song\n";
@@ -162,12 +173,12 @@ _)(_)| |(_|  |  |(/_| ||_|
 void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *&selectedPlaylist) {
     int choice;
     bool success = false;
-    std::cout << "===============================================\n";
-    std::cout << R"(
+    std::cout << "\033[38;2;255;255;0m===============================================\033[0m\n";
+    std::cout << "\033[38;2;255;182;193m" R"(
 |_)| _   |. __|_  |\/| _  _    
 |  |(_|\/||_\ |   |  |(/_| ||_|
        /                       
-)";
+)" "\033[0m\n";
     std::cout << "0. Back\n";
     std::cout << "1. List playlists\n";
     std::cout << "2. Add playlist\n";
@@ -206,12 +217,12 @@ void playlistMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist 
 void playlistDetailMenu(State &state, spotify::Playlist *&playlist, spotify::Playlist *selectedPlaylist) {
 
     int choice;
-    std::cout << "===============================================\n";
-    std::cout << R"(
+    std::cout << "\033[38;2;255;255;0m===============================================\033[0m\n";
+    std::cout << "\033[38;2;255;182;193m" R"(
 |\/|    |_)| _   |. __|_
 |  |\/  |  |(_|\/||_\ | 
     /          /        
-)";
+)" "\033[0m\n";
     std::cout << "Playlist: " << selectedPlaylist->name << std::endl;
     std::cout << "0. Back\n";
     std::cout << "1. List songs\n";

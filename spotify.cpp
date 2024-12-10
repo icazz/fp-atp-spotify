@@ -86,7 +86,7 @@ void spotify::listSongs(spotify::Song *&song){
     updateRecomendationSongs(song);
     // Menggunakan pointer sementara untuk iterasi
     spotify::Song* temp = song;
-    std::cout << "===============================================\n";
+    std::cout << "\033[38;2;255;255;0m===============================================\033[0m\n";
     std::cout << "Songs:\n";
     int count = 1;
     while (temp) {
@@ -362,7 +362,7 @@ void spotify::listPlaylistSongs(Playlist* playlist) {
     }
     
     // Tampilkan daftar lagu
-    std::cout << "\n===============================================\n";
+    std::cout << "\033[38;2;255;255;0m===============================================\033[0m\n";
     std::cout << "Songs in playlist " << playlist->name << ":\n";
     spotify::Song* current = playlist->head;
     int index = 1;
