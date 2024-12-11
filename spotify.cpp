@@ -14,11 +14,6 @@ void spotify::updateRecomendationSongs(spotify::Song *&head) {
 ├┬┘├┤ │  │ │││││││├┤ │││ ││├─┤ │ ││ ││││  └─┐│ │││││ ┬
 ┴└─└─┘└─┘└─┘┴ ┴┴ ┴└─┘┘└┘─┴┘┴ ┴ ┴ ┴└─┘┘└┘  └─┘└─┘┘└┘└─┘
 )";
-    
-    if (!outFile) {
-        std::cerr << "Error opening file: RecomendationSongs.txt\n";
-        return;
-    }
 
     while (current) {
         outFile << current->title << " - " << current->artist << std::endl;
@@ -290,8 +285,6 @@ void spotify::showText(spotify::Playlist *&text, std::string fileName){
 )";
             while (show_text) {
                 current = show_text->head;
-                outFile.close(); // Close the file before reopening in overwrite mode
-                outFile.open(fileName, std::ios::app); // Reopen the file in overwrite mode
                 outFile << counter << ". " << show_text->name << std::endl;
                 count = 'a';
                 while(current){

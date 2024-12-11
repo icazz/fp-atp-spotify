@@ -48,7 +48,7 @@ int main() {
     bool end = false;
     State state = MAIN;
     
-    std::ofstream outFile("PlaylistAku.txt", std::ios::app);
+    std::ofstream outFile("PlaylistAku.txt", std::ios::out);
     
     printWithRGB("  _____             _   _  __            ", 29, 100, 84, 120, 255, 120);
     printWithRGB(" / ____|           | | (_)/ _|           ", 29, 110, 84, 120, 255, 120); 
