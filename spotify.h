@@ -1,4 +1,3 @@
-#ifndef SPOTIFY_H
 #define SPOTIFY_H
 
 #include <string>
@@ -29,5 +28,3 @@ namespace spotify {
     void deleteSongFromPlaylist(Playlist *&playlist, Playlist *selectedPlaylist);
     
 }
-
-#endif

@@ -40,9 +40,7 @@ int main() {
                 tail->next = newSong;
                 tail = newSong;
             }
-         } //else {
-        //     std::cerr << "Invalid format: " << line << std::endl;
-        // }
+         } 
     }
 
     file.close();
